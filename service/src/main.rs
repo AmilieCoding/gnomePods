@@ -23,11 +23,13 @@ mod dbus;
 mod error;
 mod event;
 mod ringbuf;
+mod frontend;
 
 use crate::{airpods::device::AirPods, dbus::AirPodsServiceSignals, error::Result};
 
 #[tokio::main]
 async fn main() -> Result<()> {
+
    // Parse command line arguments
    let args: Vec<String> = std::env::args().collect();
    if args.len() > 1 {
@@ -103,6 +105,8 @@ async fn main() -> Result<()> {
 
    // Start event processor
    event_bus.spawn_dispatcher(connection).await?;
+
+   frontend::frontend::trigger_ui();
 
    // Wait for shutdown signal
    signal::ctrl_c().await?;

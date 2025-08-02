@@ -1,18 +1,18 @@
 [package]
-name = "kairpodsd"
+name = "gnomePods"
 version = "0.1.5"
 edition = "2024"
 
-authors = ["Can Boluk <me@can.ac>"]
-description = "D-Bus service for AirPods management in KDE Plasma"
+authors = ["Can Boluk <me@can.ac>", "Amilie <amilie@amilie.gay>"]
+description = "D-Bus service for AirPods management in GNOME"
 license = "GPL-3.0-or-later"
 
-homepage = "https://github.com/can1357/kAirPods"
-repository = "https://github.com/can1357/kAirPods"
-documentation = "https://github.com/can1357/kAirPods"
+homepage = "https://github.com/AmilieCoding/gnomePods"
+repository = "https://github.com/AmilieCoding/gnomePods"
+documentation = "https://github.com/AmilieCoding/gnomePods"
 readme = "../README.md"
 
-keywords = ["kde", "plasma", "airpods", "bluetooth", "dbus"]
+keywords = ["gnome", "airpods", "bluetooth", "dbus"]
 categories = ["hardware-support", "desktop", "os::linux-apis"]
 
 [dependencies]
@@ -36,10 +36,12 @@ rand = "0.8"
 strum = { version = "0.27", features = ["derive"] }
 heed = { version = "0.22", features = ["serde-bincode"] }
 dirs = "6.0"
+gtk = { version = "0.10.0", package = "gtk4", features = ["v4_12"] }
+glib = "0.21.0"
 
 [dev-dependencies]
 tempfile = "3.14"
 
 [[bin]]
-name = "kairpodsd"
+name = "gnomePods"
 path = "src/main.rs"
