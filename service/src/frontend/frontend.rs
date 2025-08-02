@@ -4,34 +4,46 @@ use gtk::{
     Orientation, Box as GtkBox, gio, Align,
 };
 
+use crate::airpods::device::AirPods::name;
+
 const APP_ID: &str = "org.gnomepods";
 
 pub fn trigger_ui() -> glib::ExitCode {
-    let app = Application::builder().application_id(APP_ID).build();
-    app.connect_activate(build_ui);
+    let app = Application::builder()
+        .application_id(APP_ID)
+        .build();
+
+    app.connect_activate(|app| {
+        let devices = match device::name() {
+            Ok(devs) => devs,
+            Err(_) => vec![],
+        };
+
+        build_ui(app, devices);
+    });
+
     app.run()
 }
 
-fn build_ui(app: &Application) {
+
+fn build_ui(app: &Application, devices: Vec<name>) {
     // Main vertical container
     let main_vbox = GtkBox::new(Orientation::Vertical, 12);
 
-    // --- Device Dropdown ---
+        // --- Device Dropdown ---
     let device_selector = ComboBoxText::new();
-
-    // Simulated list of devices. Replace this with your actual device fetch.
-    let devices: Vec<&str> = vec![]; // ← Replace with real device detection
 
     if devices.is_empty() {
         device_selector.append_text("No AirPods Detected");
         device_selector.set_active(Some(0));
-        device_selector.set_sensitive(false); // Make it unselectable
+        device_selector.set_sensitive(false);
     } else {
         for dev in &devices {
-            device_selector.append_text(dev);
+            device_selector.append_text(&dev.name); // or format!("{name} ({address})")
         }
         device_selector.set_active(Some(0));
-}
+    }
+
     device_selector.set_hexpand(true);
     device_selector.set_halign(Align::Start);
     main_vbox.append(&device_selector);
